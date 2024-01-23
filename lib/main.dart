@@ -4,6 +4,12 @@ void main() {
   runApp(const MyApp());
 }
 
+double borderRadius = 5.0;
+int foregroundColor = 0xFF1f1f1f;
+int backgroundColor = 0xFF000000;
+String iconAssets = "assets/icons/tinyfied";
+double iconWidth = 40.0;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -13,18 +19,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Musgi',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const BaseScreen(),
+      home: Scaffold(
+        backgroundColor: Color(backgroundColor),
+        body: const BaseScreen(),
+      ),
+      
     );
   }
 }
-
-double borderRadius = 20.0;
-int foregroundColor = 0xFFd0d0d0;
-int backgroundColor = 0xFF333333;
-String iconAssets = "assets/icons/tinyfied";
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -43,100 +47,137 @@ class _BaseScreenState extends State<BaseScreen> {
     return  Center(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.95,
+        //height: MediaQuery.of(context).size.height * 0.95,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.75,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.18,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                      color: Color(foregroundColor),
-                    ),
-                    child: Column( // Column - Buttons 
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton( icon: const Icon(Icons.add), onPressed: () { setState(() { top.add(-top.length - 1); bottom.add(bottom.length); }); },),
-                        IconButton(
-                          onPressed: () => print('Current Playlist'), 
-                          icon: Image(image: AssetImage("$iconAssets/icon_current-playlist.png"))
-                        ),
-                        IconButton(
-                          onPressed: () => print('All Songs'), 
-                          icon: Image(image: AssetImage("$iconAssets/icon_all-songs.png"))
-                        ),
-                        IconButton(
-                          onPressed: () => print('Albums'), 
-                          icon: Image(image: AssetImage("$iconAssets/icon_albums.png"))
-                        ),
-                        IconButton(
-                          onPressed: () => print('Playlists'), 
-                          icon: Image(image: AssetImage("$iconAssets/icon_playlists.png"))
-                        ),
-                        IconButton(
-                          onPressed: () => print('Settings'), 
-                          icon: Image(image: AssetImage("$iconAssets/icon_settings.png"))
-                        ),
-                      ],
-                    ), // Column - Buttons
-                  ), // Container - Buttons
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: MediaQuery.of(context).size.height * 0.80,
-
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                      color: Color(foregroundColor),
-                    ),
-                    child: CustomScrollView(
-                      slivers: <Widget>[
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                color: Colors.blue[200 + top[index] % 4 * 100],
-                                height: 100 + top[index] % 4 * 20.0,
-                                child: Text('Item: ${top[index]}'),
-                              );
-                            },
-                            childCount: top.length,
-                          ),
-                        ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Container(
-                                alignment: Alignment.center,
-                                color: Colors.blue[200 + bottom[index] % 4 * 100],
-                                height: 100 + bottom[index] % 4 * 20.0,
-                                child: Text('Item: ${bottom[index]}'),
-                              );
-                            },
-                            childCount: bottom.length,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ), // Container - Lists Songs/Albums/Configs
-                ],
-              ), // Row
-            ), // Container
-            Container(
-              height: MediaQuery.of(context).size.height * 0.20,
+            Container( // Menu Icon + Songs sorter
+              height: MediaQuery.of(context).size.height * 0.05,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                color: Color(foregroundColor),
+              ),
+            ),
+            Container( // Lists
+              height: MediaQuery.of(context).size.height * 0.65,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                color: Color(foregroundColor),
+              ),
+              child: CstItemsList(),
+            ),
+            Container( // Currently Playing
+              height: MediaQuery.of(context).size.height * 0.25,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                 color: Color(foregroundColor),
               ),
             ), // Container - Current Playing
           ],
-        ), // Main Column
+        ),
+      ), // SizedBox
 
-      ),
     ); // Center
+  }
+}
+
+
+class CstSideMenu extends StatefulWidget {
+  const CstSideMenu({super.key});
+
+  @override
+  State<CstSideMenu> createState() => _CstSideMenuState();
+}
+
+class _CstSideMenuState extends State<CstSideMenu> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.35,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        color: Color(foregroundColor),
+      ),
+      child: Column( // Column - Buttons 
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            onPressed: () => print('Current Playlist'), 
+            icon: Icon(
+              Icons.music_note_rounded,
+              color: Colors.pink,
+              size: iconWidth,
+              semanticLabel: "Current Playlist",
+            ), 
+          ),
+          IconButton(
+            onPressed: () => print('All Songs'), 
+            icon: Icon(
+              Icons.music_note,
+              color: Colors.pink,
+              size: iconWidth,
+              semanticLabel: "All Songs",
+            ), 
+          ),
+          IconButton(
+            onPressed: () => print('Albums'), 
+            icon: Icon(
+              Icons.album_rounded,
+              color: Colors.pink,
+              size: iconWidth,
+              semanticLabel: "Albums",
+            ), 
+          ),
+          IconButton(
+            onPressed: () => print('Playlists'), 
+            icon: Icon(
+              Icons.playlist_play_rounded,
+              color: Colors.pink,
+              size: iconWidth,
+              semanticLabel: "Playlists",
+            ), 
+          ),
+          IconButton(
+            onPressed: () => print('Settings'), 
+            icon: Icon(
+              Icons.settings_rounded,
+              color: Colors.pink,
+              size: iconWidth,
+              semanticLabel: "Settings",
+            ), 
+          ),
+        ],
+      ), // Column - Buttons
+    ); // Container - Buttons 
+  }
+}
+
+class CstItemsList extends StatefulWidget {
+  const CstItemsList({super.key});
+
+  @override
+  State<CstItemsList> createState() => _CstItemsListState();
+}
+
+class _CstItemsListState extends State<CstItemsList> {
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                height: 20.0,
+                child: Text('Item: '),
+              );
+            },
+          ),
+        ),
+      ],
+    ); // CustomScrollView - Actual elements list
   }
 }
