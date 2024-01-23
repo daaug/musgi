@@ -21,10 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: Scaffold(
-        backgroundColor: Color(backgroundColor),
-        body: const BaseScreen(),
-      ),
+      home: BaseScreen(),
       
     );
   }
@@ -44,40 +41,45 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.95,
-        //height: MediaQuery.of(context).size.height * 0.95,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container( // Menu Icon + Songs sorter
-              height: MediaQuery.of(context).size.height * 0.05,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                color: Color(foregroundColor),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text("Henlo"),
+        backgroundColor: Color(foregroundColor),
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        backgroundColor: Color(foregroundColor),
+        child: CstSideMenu(),
+      ),
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.95,
+          //height: MediaQuery.of(context).size.height * 0.95,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container( // Lists
+                height: MediaQuery.of(context).size.height * 0.65,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                  color: Color(foregroundColor),
+                ),
+                child: CstItemsList(),
               ),
-            ),
-            Container( // Lists
-              height: MediaQuery.of(context).size.height * 0.65,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                color: Color(foregroundColor),
-              ),
-              child: CstItemsList(),
-            ),
-            Container( // Currently Playing
-              height: MediaQuery.of(context).size.height * 0.25,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                color: Color(foregroundColor),
-              ),
-            ), // Container - Current Playing
-          ],
-        ),
-      ), // SizedBox
+              Container( // Currently Playing
+                height: MediaQuery.of(context).size.height * 0.20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                  color: Color(foregroundColor),
+                ),
+              ), // Container - Current Playing
+            ],
+          ),
+        ), // SizedBox
 
-    ); // Center
+      ), // Center
+    ); // Scaffold
   }
 }
 
@@ -93,63 +95,62 @@ class _CstSideMenuState extends State<CstSideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.35,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-        color: Color(foregroundColor),
-      ),
-      child: Column( // Column - Buttons 
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            onPressed: () => print('Current Playlist'), 
-            icon: Icon(
-              Icons.music_note_rounded,
-              color: Colors.pink,
-              size: iconWidth,
-              semanticLabel: "Current Playlist",
-            ), 
-          ),
-          IconButton(
-            onPressed: () => print('All Songs'), 
-            icon: Icon(
-              Icons.music_note,
-              color: Colors.pink,
-              size: iconWidth,
-              semanticLabel: "All Songs",
-            ), 
-          ),
-          IconButton(
-            onPressed: () => print('Albums'), 
-            icon: Icon(
-              Icons.album_rounded,
-              color: Colors.pink,
-              size: iconWidth,
-              semanticLabel: "Albums",
-            ), 
-          ),
-          IconButton(
-            onPressed: () => print('Playlists'), 
-            icon: Icon(
-              Icons.playlist_play_rounded,
-              color: Colors.pink,
-              size: iconWidth,
-              semanticLabel: "Playlists",
-            ), 
-          ),
-          IconButton(
-            onPressed: () => print('Settings'), 
-            icon: Icon(
-              Icons.settings_rounded,
-              color: Colors.pink,
-              size: iconWidth,
-              semanticLabel: "Settings",
-            ), 
-          ),
-        ],
-      ), // Column - Buttons
-    ); // Container - Buttons 
+    return Column( // Column - Buttons 
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        TextButton.icon(
+          onPressed: () => print('Current Playlist'), 
+          icon: Icon(
+            Icons.music_note_rounded,
+            color: Colors.pink,
+            size: iconWidth,
+            semanticLabel: "Current Playlist",
+          ), 
+          label: Text("Current Playlist"),
+        ),
+        TextButton.icon(
+          onPressed: () => print('All Songs'), 
+          icon: Icon(
+            Icons.music_note,
+            color: Colors.pink,
+            size: iconWidth,
+            semanticLabel: "All Songs",
+          ), 
+          label: Text("All Songs"),
+        ),
+        TextButton.icon(
+          onPressed: () => print('Albums'), 
+          icon: Icon(
+            Icons.album_rounded,
+            color: Colors.pink,
+            size: iconWidth,
+            semanticLabel: "Albums",
+          ), 
+          label: Text("Albums"),
+        ),
+        TextButton.icon(
+          onPressed: () => print('Playlists'), 
+          icon: Icon(
+            Icons.playlist_play_rounded,
+            color: Colors.pink,
+            size: iconWidth,
+            semanticLabel: "Playlists",
+          ), 
+          label: Text("Playlists"),
+        ),
+        TextButton.icon(
+          onPressed: () => print('Settings'), 
+          icon: Icon(
+            Icons.settings_rounded,
+            color: Colors.pink,
+            size: iconWidth,
+            semanticLabel: "Settings",
+          ), 
+          label: Text("Settings"),
+        ),
+      ],
+    ); // Column - Buttons
   }
 }
 
